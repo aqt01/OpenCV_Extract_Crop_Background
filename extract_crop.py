@@ -18,8 +18,9 @@ def crop_show(name):
     print name
     im = cv2.imread(name)
 
+    # Median Blur, used in case of noisy images
+    #im = cv2.medianBlur(im,5)
 
-    im = cv2.medianBlur(im,5)
     hsv_img = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
     COLOR_MIN = np.array([10, 10, 10],np.uint8)
     COLOR_MAX = np.array([255, 255, 255],np.uint8)
@@ -34,22 +35,25 @@ def crop_show(name):
     cnt=contours[max_index]
 
     x,y,w,h = cv2.boundingRect(cnt)
-
+    
+    # Draws a green rectangle on object to crop
     #cv2.rectangle(im,(x,y),(x+w,y+h),(0,255,0),2)
-    cv2.imshow("Show",im)
-
     print x
     print y
     print h
     print w
 
     crop_img = im[y:y+h+5,x:x+w+5]
-
+    # Shows Raw and Cropped image
+    """
+    cv2.imshow("RawImage",im)
     cv2.imshow("CroppedImage",crop_img)
     cv2.waitKey()
     cv2.destroyAllWindows()
+    """
 
-
+    return crop_img
+    
 for i in name:
     if (i[-3:]=="jpg" or i[-3:]=="JPG"):
         crop_show(i)
